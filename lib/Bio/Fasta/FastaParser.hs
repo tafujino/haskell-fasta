@@ -12,7 +12,7 @@ import Data.Attoparsec.Applicative
 import Data.ByteString.Char8 hiding (takeWhile, takeWhile1)
 import Bio.Fasta.Fasta
 
-type NASeq = String
+type Seq = String
 
 -- original isSpace gives True when EOL is input
 isSpace' :: Char -> Bool
@@ -32,7 +32,7 @@ nameP = unpack <$> takeWhile1 (not <$> isSpace)
 descP :: Parser String
 descP = unpack <$> takeWhile (not <$> isEndOfLine')
 
-seqP :: Parser NASeq
+seqP :: Parser Seq
 seqP = (unpack . concat) <$>
        many1 (endOfLine *> takeWhile (inClass' "ABCDEFGHIKLMNPQRSTUVWYZX*-") <* skipSpace')
 
