@@ -25,7 +25,7 @@ seqP = (unpack . concat) <$>
 
 fasta1Parser :: Parser Fasta
 fasta1Parser = Fasta <$>
-               (char '>' *> takeWhile isSpace' *> nameP) <*> -- unstrict FASTA may contain spaces after '>'
+               (char '>' *> skipSpace' *> nameP) <*> -- unstrict FASTA may contain spaces after '>'
                (skipSpace' *> descP) <*>
                seqP
 
