@@ -5,6 +5,7 @@ module Bio.Fasta.FastaParser
 where
 
 import Prelude hiding (concat, takeWhile, takeWhile1)
+import Control.Monad
 import Data.Attoparsec.ByteString.Char8
 import Data.Attoparsec.ByteString hiding (takeWhile, takeWhile1)
 import Data.Attoparsec.Applicative
@@ -17,6 +18,10 @@ type NASeq = String
 isSpace' :: Char -> Bool
 isSpace' = (== ' ') <||> (== '\t')
 
+-- original skipSpace skips EOLs
+skipSpace' :: Parser ()
+skipSpace' = void $ takeWhile isSpace'
+
 -- original isEndOfLine has type Word8 -> Bool
 isEndOfLine' :: Char -> Bool
 isEndOfLine' = (== '\n') <||> (== '\r')
@@ -27,14 +32,14 @@ nameP = unpack <$> takeWhile1 (not <$> isSpace)
 descP :: Parser String
 descP = unpack <$> takeWhile (not <$> isEndOfLine')
 
--- currently sequence string is unchecked (may contain non-nucleic or non-amino acid characters)
 seqP :: Parser NASeq
-seqP = (unpack . concat) <$> many1 (endOfLine *> takeWhile (not <$> isEndOfLine' <&&> (/= '>')))
+seqP = (unpack . concat) <$>
+       many1 (endOfLine *> takeWhile (inClass' "ABCDEFGHIKLMNPQRSTUVWYZX*-") <* skipSpace')
 
 fasta1Parser :: Parser Fasta
 fasta1Parser = Fasta <$>
                (char '>' *> takeWhile isSpace' *> nameP) <*> -- unstrict FASTA may contain spaces after '>'
-               (takeWhile isSpace' *> descP) <*>
+               (skipSpace' *> descP) <*>
                seqP
 
 fastaParser :: Parser [Fasta]
