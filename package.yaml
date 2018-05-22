@@ -29,6 +29,7 @@ tests:
 library:
   exposed-modules:
      - Bio.Fasta.Fasta
-     - Bio.Fasta.FastaParser
+     - Bio.Fasta.IO
+     - Bio.Fasta.Parse
   source-dirs: lib
 

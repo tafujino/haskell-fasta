@@ -1,4 +1,4 @@
-module Bio.Fasta.FastaParser
+module Bio.Fasta.Parse
   (fasta1Parser,
    fastaParser
   )
@@ -30,4 +30,4 @@ fasta1Parser = Fasta <$>
                seqP
 
 fastaParser :: Parser [Fasta]
-fastaParser = many' (many' endOfLine *> fasta1Parser)
+fastaParser = fasta1Parser `sepBy` many' (skipSpace' *> endOfLine) <* skipSpace <* endOfInput
