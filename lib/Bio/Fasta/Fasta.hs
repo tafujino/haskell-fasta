@@ -3,10 +3,11 @@ module Bio.Fasta.Fasta
   )
 where
 
-type NASeq = String
+import Data.Text
+import Data.ByteString
 
 data Fasta = Fasta {
-  fastaName   :: String,
-  fastaDesc   :: String,
-  fastaSeq    :: NASeq
+  fastaName :: Text,
+  fastaDesc :: Text,
+  fastaSeq  :: ByteString
   } deriving Show

@@ -4,30 +4,31 @@ module Bio.Fasta.Parse
   )
 where
 
-import Prelude hiding (concat, takeWhile, takeWhile1)
-import Data.Attoparsec.ByteString.Char8
-import Data.Attoparsec.ByteString hiding (takeWhile, takeWhile1)
+import qualified Data.Attoparsec.ByteString.Char8 as A8
+import Control.Monad
 import Data.Attoparsec.Applicative
-import Data.ByteString.Char8 hiding (takeWhile, takeWhile1)
+import Data.ByteString.Char8 as B8
+import Data.Text.Encoding
+import qualified Data.Text as T
 import Bio.Fasta.Fasta
 
-type Seq = String
+nameP :: A8.Parser T.Text
+nameP = decodeUtf8 <$> A8.takeWhile1 (not <$> A8.isSpace)
 
-nameP :: Parser String
-nameP = unpack <$> takeWhile1 (not <$> isSpace)
+descP :: A8.Parser T.Text
+descP = T.stripEnd  . decodeUtf8 <$> A8.takeWhile (not <$> isEndOfLine')
 
-descP :: Parser String
-descP = unpack <$> takeWhile (not <$> isEndOfLine')
+-- input characters should be checked in the downstream
+seqP :: A8.Parser ByteString
+seqP = B8.concat <$>
+       A8.many1 (A8.takeWhile1 (not <$> A8.isSpace) <* skipSpace' <* A8.endOfLine)
 
-seqP :: Parser Seq
-seqP = (unpack . concat) <$>
-       many1 (endOfLine *> takeWhile (inClass' "ABCDEFGHIKLMNPQRSTUVWYZX*-") <* skipSpace')
-
-fasta1Parser :: Parser Fasta
+fasta1Parser :: A8.Parser Fasta
 fasta1Parser = Fasta <$>
-               (char '>' *> skipSpace' *> nameP) <*> -- unstrict FASTA may contain spaces after '>'
-               (skipSpace' *> descP) <*>
+               -- unstrict FASTA may contain spaces after '>'
+               (A8.char '>' *> skipSpace' *> nameP) <* skipSpace' <*>
+               descP <* A8.endOfLine <*>
                seqP
 
-fastaParser :: Parser [Fasta]
-fastaParser = fasta1Parser `sepBy` many' (skipSpace' *> endOfLine) <* skipSpace <* endOfInput
+fastaParser :: A8.Parser [Fasta]
+fastaParser = A8.many1 fasta1Parser <* A8.skipSpace <* A8.endOfInput

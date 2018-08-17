@@ -18,6 +18,8 @@ dependencies:
   - bytestring
   - conduit
   - conduit-extra
+  - text
+  - naseq
   
 tests:
   fasta-test:
