@@ -3,8 +3,8 @@ module Bio.Fasta.Fasta
   )
 where
 
-import Data.Text
 import Data.ByteString
+import Data.Text
 
 data Fasta = Fasta {
   fastaName :: Text,

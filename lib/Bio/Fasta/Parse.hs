@@ -5,13 +5,13 @@ module Bio.Fasta.Parse
 where
 
 import Prelude hiding (takeWhile)
-import Data.Attoparsec.ByteString.Char8
+import Bio.Fasta.Fasta
 import Control.Monad
 import Data.Attoparsec.Applicative
+import Data.Attoparsec.ByteString.Char8
 import qualified Data.ByteString.Char8 as B8
-import Data.Text.Encoding
 import qualified Data.Text as T
-import Bio.Fasta.Fasta
+import Data.Text.Encoding
 
 nameP :: Parser T.Text
 nameP = decodeUtf8 <$> takeWhile1 (not <$> isSpace)
