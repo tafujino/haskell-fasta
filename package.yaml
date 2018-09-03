@@ -19,7 +19,6 @@ dependencies:
   - conduit
   - conduit-extra
   - text
-  - naseq
   
 tests:
   fasta-test:
@@ -30,7 +29,7 @@ tests:
 
 library:
   exposed-modules:
-     - Bio.Fasta.Fasta
+     - Bio.Fasta
      - Bio.Fasta.IO
      - Bio.Fasta.Parse
   source-dirs: lib

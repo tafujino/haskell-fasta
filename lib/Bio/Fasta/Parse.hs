@@ -5,7 +5,7 @@ module Bio.Fasta.Parse
 where
 
 import Prelude hiding (takeWhile)
-import Bio.Fasta.Fasta
+import Bio.Fasta
 import Control.Monad
 import Data.Attoparsec.Applicative
 import Data.Attoparsec.ByteString.Char8

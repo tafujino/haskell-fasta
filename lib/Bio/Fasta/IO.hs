@@ -5,7 +5,7 @@ where
 
 import Conduit
 import Data.Conduit.Attoparsec
-import Bio.Fasta.Fasta
+import Bio.Fasta
 import Bio.Fasta.Parse
 
 readFastaFile :: FilePath -> IO [Fasta]

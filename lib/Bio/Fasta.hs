@@ -1,4 +1,4 @@
-module Bio.Fasta.Fasta
+module Bio.Fasta
   (Fasta(..)
   )
 where

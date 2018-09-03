@@ -1,4 +1,4 @@
-import Bio.Fasta.Fasta
+import Bio.Fasta
 import Bio.Fasta.IO
 
 main :: IO ()
