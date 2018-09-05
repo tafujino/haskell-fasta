@@ -1,13 +1,11 @@
 module Bio.Fasta
-  (Fasta(..)
-  )
 where
 
-import Data.ByteString
+import Bio.BioSeq
 import Data.Text
 
-data Fasta = Fasta {
+data Fasta a = Fasta {
   fastaName :: Text,
   fastaDesc :: Text,
-  fastaSeq  :: ByteString
+  fastaSeq  :: a
   } deriving Show

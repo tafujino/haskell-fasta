@@ -15,6 +15,7 @@ dependencies:
   - attoparsec
   - attoparsec-applicative  
   - base >= 4.7 && < 5
+  - bioseq
   - bytestring
   - conduit
   - conduit-extra

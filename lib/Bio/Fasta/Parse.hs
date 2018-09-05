@@ -5,6 +5,7 @@ module Bio.Fasta.Parse
 where
 
 import Prelude hiding (takeWhile)
+import Bio.BioSeq
 import Bio.Fasta
 import Control.Monad
 import Data.Attoparsec.Applicative
@@ -19,17 +20,16 @@ nameP = decodeUtf8 <$> takeWhile1 (not <$> isSpace)
 descP :: Parser T.Text
 descP = T.stripEnd . decodeUtf8 <$> takeWhile (not <$> isEndOfLine')
 
--- input characters should be checked in the downstream
-seqP :: Parser B8.ByteString
-seqP = B8.concat <$>
+seqP :: BioSeq a => Parser a
+seqP = fromIupacByteString . B8.concat <$>
        many1 (takeWhile1 (not <$> isSpace) <* skipSpace' <* endOfLine)
 
-fasta1Parser :: Parser Fasta
+fasta1Parser :: BioSeq a => Parser (Fasta a)
 fasta1Parser = Fasta <$>
                -- unstrict FASTA may contain spaces after '>'
                (char '>' *> skipSpace' *> nameP) <* skipSpace' <*>
                descP <* endOfLine <*>
                seqP
 
-fastaParser :: Parser [Fasta]
+fastaParser :: BioSeq a => Parser [Fasta a]
 fastaParser = many1 fasta1Parser <* skipSpace <* endOfInput
