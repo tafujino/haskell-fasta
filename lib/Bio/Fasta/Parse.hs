@@ -7,6 +7,7 @@ where
 import Prelude hiding (takeWhile)
 import Bio.BioSeq
 import Bio.Fasta
+import Control.Applicative
 import Control.Monad
 import Data.Attoparsec.Applicative
 import Data.Attoparsec.ByteString.Char8
@@ -22,7 +23,7 @@ descP = T.stripEnd . decodeUtf8 <$> takeWhile (not <$> isEndOfLine')
 
 seqP :: BioSeq a => Parser a
 seqP = fromIupacByteString . B8.concat <$>
-       many1 (takeWhile1 (not <$> isSpace) <* skipSpace' <* endOfLine)
+       many1 (liftA2 B8.cons (notChar '>') (takeWhile (not <$> isSpace)) <* skipSpace' <* endOfLine)
 
 fasta1Parser :: BioSeq a => Parser (Fasta a)
 fasta1Parser = Fasta <$>
