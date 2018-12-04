@@ -35,12 +35,14 @@ resolver: lts-11.9
 #  - wai
 packages:
 - .
-- ../attoparsec-applicative
-- ../bioseq
 # Dependency packages to be pulled from upstream that are not in the resolver
 # using the same syntax as the packages field.
 # (e.g., acme-missiles-0.3)
-# extra-deps: []
+extra-deps:
+- git: git@github.com:tafujino/attoparsec-applicative.git
+  commit: master
+- git: git@github.com:tafujino/bioseq.git
+  commit: master
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
