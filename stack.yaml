@@ -18,7 +18,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-11.9
+resolver: lts-18.8
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -40,9 +40,9 @@ packages:
 # (e.g., acme-missiles-0.3)
 extra-deps:
 - git: git@github.com:tafujino/attoparsec-applicative.git
-  commit: master
+  commit: a430f117d03364b9f1a3ee422171f163a56a2bb7
 - git: git@github.com:tafujino/bioseq.git
-  commit: master
+  commit: afea71c5304110e0189a387989aeef0b10883e9e
 
 # Override default flag values for local packages and extra-deps
 # flags: {}
